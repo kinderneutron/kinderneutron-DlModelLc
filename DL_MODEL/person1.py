@@ -18,26 +18,26 @@ def preprocess_image(image_path):
     return image
 
 # Load images and labels
-X = []
-y = []
+images = []
+labels = []
 
 # Load images with person
 for filename in os.listdir(person_dir):
     if filename.endswith(".jpg") or filename.endswith(".png"):
         image_path = os.path.join(person_dir, filename)
-        X.append(preprocess_image(image_path))
-        y.append(1)  # Label for person presence
+        images.append(preprocess_image(image_path))
+        labels.append(1)  # Label for person presence
 
 # Load images without person
 for filename in os.listdir(no_person_dir):
     if filename.endswith(".jpg") or filename.endswith(".png"):
         image_path = os.path.join(no_person_dir, filename)
-        X.append(preprocess_image(image_path))
-        y.append(0)  # Label for no person
+        images.append(preprocess_image(image_path))
+        labels.append(0)  # Label for no person
 
 # Convert lists to arrays
-X = np.array(X)
-y = np.array(y)
+x = np.array(images)
+y = np.array(labels)
 
 # Define CNN model
 model = models.Sequential([
@@ -57,7 +57,7 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 # Train the model
-model.fit(X, y, epochs=10, batch_size=32)
+model.fit(x, y, epochs=10, batch_size=32)
 
 # Now, let's use the trained model to detect if a person is present in real-time using the laptop camera
 cap = cv2.VideoCapture(0)  # Open the default camera (0)
