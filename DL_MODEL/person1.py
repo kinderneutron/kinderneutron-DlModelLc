@@ -7,10 +7,10 @@ from tensorflow.keras import layers, models
 
 # Define paths to the dataset
 #dataset_dir = "C:/Users/hp/Downloads/ML/human detection dataset"
-cur_dir=os.getcwd()
-dataset_dir= os.path.join(cur_dir,"kinderneutron-DlModelLc/DL_MODEL/human detection dataset")
-person_dir = os.path.join(dataset_dir, "1")
-no_person_dir = os.path.join(dataset_dir, "0")
+cur_dir=os.path.dirname(os.path.abspath(__file__))
+dataset_dir= os.path.join(cur_dir,"human detection dataset")
+person_dir = os.path.join(dataset_dir, "1").replace("\\", "/")
+no_person_dir = os.path.join(dataset_dir, "0").replace("\\", "/")
 
 # Function to preprocess images
 def preprocess_image(image_path):
