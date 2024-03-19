@@ -6,7 +6,9 @@ from matplotlib import pyplot as plt
 from tensorflow.keras import layers, models
 
 # Define paths to the dataset
-dataset_dir = "C:/Users/hp/Downloads/project/human detection dataset"
+#dataset_dir = "C:/Users/hp/Downloads/ML/human detection dataset"
+cur_dir=os.getcwd()
+dataset_dir= os.path.join(cur_dir,"kinderneutron-DlModelLc/DL_MODEL/human detection dataset")
 person_dir = os.path.join(dataset_dir, "1")
 no_person_dir = os.path.join(dataset_dir, "0")
 
@@ -36,8 +38,8 @@ for filename in os.listdir(no_person_dir):
         labels.append(0)  # Label for no person
 
 # Convert lists to arrays
-x = np.array(images)
-y = np.array(labels)
+images_arr = np.array(images)
+labels_arr = np.array(labels)
 
 # Define CNN model
 model = models.Sequential([
@@ -57,7 +59,7 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 # Train the model
-model.fit(x, y, epochs=10, batch_size=32)
+model.fit(images_arr, labels_arr, epochs=10, batch_size=32)
 
 # Now, let's use the trained model to detect if a person is present in real-time using the laptop camera
 cap = cv2.VideoCapture(0)  # Open the default camera (0)
@@ -82,7 +84,7 @@ while True:
     # Show the frame
     plt.imshow(frame)
     plt.title('Room Monitoring')
-    plt.show()  
+    plt.show() 
 
 
     # Break the loop when 'q' is pressed
