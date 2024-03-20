@@ -1,6 +1,8 @@
 name: Python Syntax Checker
 
 on:
+  push:
+    branches: [ "main" ]
   pull_request:
     branches:
       - main
