@@ -4,6 +4,7 @@ import numpy as np
 import tensorflow as tf
 from matplotlib import pyplot as plt
 from tensorflow.keras import layers, models
+from tensorflow.keras import Input
 
 # Define paths to the dataset
 #dataset_dir = "C:/Users/hp/Downloads/ML/human detection dataset"
@@ -43,23 +44,30 @@ labels_arr = np.array(labels)
 
 # Define CNN model
 model = models.Sequential([
-    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(100, 100, 3)),
+    Input(shape=(100, 100, 3)),  # Input layer
+    layers.Conv2D(32, (3, 3), activation='relu'),
     layers.MaxPooling2D((2, 2)),
     layers.Conv2D(64, (3, 3), activation='relu'),
     layers.MaxPooling2D((2, 2)),
-    layers.Conv2D(64, (3, 3), activation='relu'),
+    layers.Conv2D(128, (3, 3), activation='relu'),
+    layers.MaxPooling2D((2, 2)),
     layers.Flatten(),
-    layers.Dense(64, activation='relu'),
-    layers.Dense(1, activation='sigmoid')  # Change to sigmoid for binary classification
+    layers.Dropout(0.5),  # Dropout layer for regularization
+    layers.Dense(128, activation='relu'),
+    layers.Dense(1, activation='sigmoid')
 ])
 
 # Compile the model
 model.compile(optimizer='adam',
-              loss='binary_crossentropy',  # Change loss function for binary classification
+              loss='binary_crossentropy',
               metrics=['accuracy'])
 
+
 # Train the model
-model.fit(images_arr, labels_arr, epochs=10, batch_size=32)
+model.fit(images_arr, labels_arr, batch_size=32, epochs=20)
+
+# Evaluate the model
+model.evaluate(images_arr, labels_arr)
 
 # Now, let's use the trained model to detect if a person is present in real-time using the laptop camera
 cap = cv2.VideoCapture(0)  # Open the default camera (0)
